@@ -4,21 +4,52 @@ using UnityEngine;
 
 public class Router : MonoBehaviour
 {
-    public GameObject Homepage;
-    public GameObject Categorypage;
-    public GameObject Drawer;
+    private static Router _instance;
+    public static Router Instance
+    {
+        get { return _instance; }
+    }
+
+    public HomeController HomePage;
+    public SubCategoriesController SubCategoriesPage;
+    public CartController CartPage;
+    public Drawer Drawer;
+
+    private Dictionary<string, IRoute> _routes;
+
+    void Awake()
+    {
+        _instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        Drawer.SetActive(true);
-        //Homepage.SetActive(false);
-        //Categorypage.SetActive(true);
+        Drawer.gameObject.SetActive(true);
 
+        _routes = new Dictionary<string, IRoute>()
+        {
+            { "Home", (HomePage as IRoute) },
+            { "SubCategories", (SubCategoriesPage as IRoute) },
+            { "Cart", (CartPage as IRoute) }
+        };
+
+        ChangeRoute("Home");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeRoute(string routeName)
     {
+        foreach (KeyValuePair<string, IRoute> route in _routes)
+        {
+            if (route.Key == routeName)
+            {
+                route.Value.GetGameObject().SetActive(true);
+                route.Value.Refresh();
+            }
+            else
+            {
+                route.Value.GetGameObject().SetActive(false);
+            }
+        }
     }
 }
