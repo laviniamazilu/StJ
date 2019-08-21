@@ -58,7 +58,16 @@ namespace Assets.Scripts.Utils
             return count;
         }
 
-        public static string GetPathToStreamingAssetsFile(string fileName) {
+        public static GameObject CreateUiObject(GameObject go, string name = "UiObject", Transform parent = null)
+        {
+            go.name = name;
+            go.transform.SetParent(parent);
+            go.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            return go;
+        }
+
+        public static string GetPathToStreamingAssetsFile(string fileName)
+        {
             string filePath = string.Empty;
 #if UNITY_EDITOR
             filePath = string.Format(@"Assets/StreamingAssets/{0}", fileName);

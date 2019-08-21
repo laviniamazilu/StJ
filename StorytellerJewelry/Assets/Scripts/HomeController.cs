@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class HomeController : MonoBehaviour, IRoute
 {
-    // Start is called before the first frame update
-    void Start()
+    private Route _thisRoute = new Route()
     {
+        RoutePath = "Home"
+    };
 
-    }
+    public CategoriesController CategoriesController;
 
-    // Update is called once per frame
-    void Update()
+    public void Refresh(Route route)
     {
-
-    }
-
-    public void Refresh()
-    {
-
+        CategoriesController.PopulateCategories();
     }
 
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    public Route GetRoute()
+    {
+        return _thisRoute;
     }
 }

@@ -1,28 +1,34 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Data;
+using Assets.Scripts.Utils;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SubCategoriesController : MonoBehaviour, IRoute
 {
-    // Start is called before the first frame update
-    void Start()
+    private Route _thisRoute = new Route()
     {
+        RoutePath = "SubCategories"
+    };
 
-    }
+    public CategoriesController CategoriesController;
 
-    // Update is called once per frame
-    void Update()
+    public void Refresh(Route route)
     {
+        _thisRoute = route;
 
-    }
-
-    public void Refresh()
-    {
+        CategoriesController.PopulateCategories(_thisRoute.RouteKey);
 
     }
 
     public GameObject GetGameObject()
     {
         return gameObject;
+    }
+
+    public Route GetRoute()
+    {
+        return _thisRoute;
     }
 }

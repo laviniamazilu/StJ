@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CartController : MonoBehaviour, IRoute
 {
+    private Route _thisRoute = new Route()
+    {
+        RoutePath = "Cart"
+    };
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +26,13 @@ public class CartController : MonoBehaviour, IRoute
         return gameObject;
     }
 
-    public void Refresh()
+    public void Refresh(Route route)
     {
-        throw new System.NotImplementedException();
+
+    }
+
+    public Route GetRoute()
+    {
+        return _thisRoute;
     }
 }

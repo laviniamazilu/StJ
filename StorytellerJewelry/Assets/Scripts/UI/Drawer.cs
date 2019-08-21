@@ -6,6 +6,13 @@ using UnityEngine.UI;
 
 public class Drawer : MonoBehaviour
 {
+    private static Drawer _instance;
+    public static Drawer Instance
+    {
+        get { return _instance; }
+        set { _instance = value; }
+    }
+
     public RectTransform Content;
 
     public float AnimationTime = 2f;
@@ -17,6 +24,11 @@ public class Drawer : MonoBehaviour
     private float _openXPosition;
 
     private int? _moveDrawerTweenId;
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +46,8 @@ public class Drawer : MonoBehaviour
         if (_isOpen)
         {
             CloseDrawer();
-        } else
+        }
+        else
         {
             OpenDrawer();
         }
