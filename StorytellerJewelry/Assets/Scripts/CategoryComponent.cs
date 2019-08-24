@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CategoryComponent : MonoBehaviour
+public class CategoryComponent : MonoBehaviour, IPrefabComponent
 {
-    public int Id;
-    public Route Route;
+    public int Id { get; set; }
+    public Route Route { get; set; }
     public Text CategoryName;
 
     public void OnClick()
     {
         Router.Instance.ChangeRouteInternal(Route);
     }
+
+    public GameObject GameObject { get { return this.gameObject; } }
+}
+
+public interface IPrefabComponent
+{
+    int Id { get; set; }
+    Route Route { get; set; }
+
+    GameObject GameObject { get; }
 }

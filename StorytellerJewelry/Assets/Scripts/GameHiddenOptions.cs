@@ -37,6 +37,7 @@ public class GameHiddenOptions : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject CategoryPrefab;
+    public GameObject ProductPrefab;
 
     [Header("Miscs")]
     public CanvasScaler CanvasScaler;
@@ -60,6 +61,11 @@ public class GameHiddenOptions : MonoBehaviour
     internal float GetTime(float normalTime)
     {
         return InstantDebug ? 0f : normalTime;
+    }
+
+    public GameObject GetAnInstantiated(GameObject prefab)
+    {
+        return Instantiate(prefab);
     }
     //public Color32 TextOverBlackColor;
 }

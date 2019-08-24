@@ -66,6 +66,39 @@ namespace Assets.Scripts.Utils
             return go;
         }
 
+        public static bool CheckInPool(int id, GameObject prefab, Transform parent, out IPrefabComponent component, ref List<IPrefabComponent> pool)
+        {
+            var wasNull = false;
+            component = null;
+
+            if (pool == null)
+            {
+                pool = new List<IPrefabComponent>();
+                wasNull = true;
+            }
+            else
+            {
+                wasNull = pool.Count(c => c.Id == id) == 0;
+                if (wasNull == false)
+                {
+                    component = pool.FirstOrDefault(c => c.Id == id);
+                    component.GameObject.SetActive(true);
+                }
+            }
+
+            if (wasNull == true)
+            {
+                var go = CreateUiObject(
+                    GameHiddenOptions.Instance.GetAnInstantiated(prefab),
+                    "clone",
+                    parent
+                    );
+                component = go.GetComponent<IPrefabComponent>();
+            }
+
+            return wasNull;
+        }
+
         public static string GetPathToStreamingAssetsFile(string fileName)
         {
             string filePath = string.Empty;

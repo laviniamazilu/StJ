@@ -51,5 +51,42 @@ namespace Assets.Scripts.Data
         {
             return new User() { Name = "Lavinia Mazilu", Address = "", Email = "lavmaz@gmail.com" };
         }
+
+        public static List<Product> GetProducts(int categoryId = 0)
+        {
+            return new List<Product>() {
+                        new Product() { Id = 5, Name = "Bratara 1", PicturePath = "Lant1", CategoryId = categoryId },
+                        new Product() { Id = 6, Name = "Bratara 2", PicturePath = "Lant1", CategoryId = categoryId },
+                        new Product() { Id = 7, Name = "Coliere 1", PicturePath = "Lant1", CategoryId = categoryId },
+                        new Product() { Id = 7, Name = "Coliere 2", PicturePath = "Lant1", CategoryId = categoryId }
+                        };
+            //switch (categoryId)
+            //{
+            //    case 1:
+            //        return new List<Product>() {
+            //            new Product() { Id = 5, Description = "Bratari", CategoryId = categoryId },
+            //            new Product() { Id = 6, Description = "Lanturi", CategoryId = categoryId },
+            //            new Product() { Id = 7, Description = "Coliere cu nume", CategoryId = categoryId }
+            //        };
+            //    case 2:
+            //        return new List<Product>() {
+            //            new Product() { Id = 5, Description = "Bratari", CategoryId = categoryId },
+            //            new Product() { Id = 6, Description = "Lanturi", CategoryId = categoryId }
+            //        };
+            //    case 3:
+            //        return new List<Product>() {
+            //            new Product() { Id = 5, Description = "Bratari", CategoryId = categoryId },
+            //            new Product() { Id = 6, Description = "Lanturi", CategoryId = categoryId }
+            //        };
+            //    case 4:
+            //        return new List<Product>() {
+            //            new Product() { Id = 5, Description = "Bratari", CategoryId = categoryId },
+            //            new Product() { Id = 6, Description = "Lanturi", CategoryId = categoryId },
+            //            new Product() { Id = 8, Description = "Banuti mot", CategoryId = categoryId }
+            //        };
+            //    default:
+            //        return new List<Product>();
+            //}
+        }
     }
 }

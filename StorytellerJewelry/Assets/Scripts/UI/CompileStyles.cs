@@ -25,7 +25,7 @@ public class CompileStyles : MonoBehaviour
                 child.GetComponent<Style>().ApplyStyle();
 #endif
             }
-            Debug.Log(child.gameObject.name);
+            //Debug.Log(child.gameObject.name);
         }
     }
 }

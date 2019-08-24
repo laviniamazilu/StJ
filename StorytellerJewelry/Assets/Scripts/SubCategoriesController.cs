@@ -18,7 +18,7 @@ public class SubCategoriesController : MonoBehaviour, IRoute
     {
         _thisRoute = route;
 
-        CategoriesController.PopulateCategories(_thisRoute.RouteKey);
+        CategoriesController.PopulateCategories(_thisRoute.RouteKey, "Products");
 
     }
 

@@ -9,9 +9,9 @@ public class CategoriesController : MonoBehaviour
 {
     public List<Category> Categories;
 
-    private List<CategoryComponent> _categoriesPool;
+    private List<IPrefabComponent> _categoriesPool;
 
-    public void PopulateCategories(int categoryId = 0)
+    public void PopulateCategories(int categoryId = 0, string actionRoutePath = "SubCategories")
     {
         if (categoryId == 0)
         {
@@ -32,36 +32,22 @@ public class CategoriesController : MonoBehaviour
 
         foreach (Category category in Categories)
         {
-            CategoryComponent categoryComponent = null;
-            var wasNull = false;
-
-            if (_categoriesPool == null)
-            {
-                _categoriesPool = new List<CategoryComponent>();
-                wasNull = true;
-            }
-            else
-            {
-                wasNull = _categoriesPool.Count(c => c.Id == category.Id) == 0;
-                if (wasNull == false)
-                {
-                    categoryComponent = _categoriesPool.FirstOrDefault(c => c.Id == category.Id);
-                    categoryComponent.gameObject.SetActive(true);
-                }
-            }
-
-            if (wasNull == true)
-            {
-                categoryComponent = CreateCategoryComponent(category);
-            }
+            var wasNull = UsefullUtils.CheckInPool(
+                category.Id,
+                GameHiddenOptions.Instance.CategoryPrefab,
+                this.transform,
+                out IPrefabComponent categoryComponent,
+                ref _categoriesPool
+                );
 
             categoryComponent.Id = category.Id;
-            categoryComponent.CategoryName.text = category.Description;
             categoryComponent.Route = new Route()
             {
-                RoutePath = "SubCategories",
+                RoutePath = actionRoutePath,
                 RouteKey = category.Id
             };
+
+            (categoryComponent as CategoryComponent).CategoryName.text = category.Description;
 
             if (wasNull)
             {
