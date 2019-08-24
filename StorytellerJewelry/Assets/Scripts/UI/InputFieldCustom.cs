@@ -13,6 +13,7 @@ public class InputFieldCustom : MonoBehaviour
 
     public bool AnimateLabel = true;
     public bool AllUppercase;
+    public bool IsDisabled = false;
 
     private float _animationSpeed = 0.2f;
 
@@ -34,6 +35,14 @@ public class InputFieldCustom : MonoBehaviour
 
     private void Start()
     {
+        if (IsDisabled)
+        {
+            SetDisabled();
+        }
+        else
+        {
+            SetEnabled();
+        }
 
         Init();
         OnBlur();
@@ -75,10 +84,13 @@ public class InputFieldCustom : MonoBehaviour
             }
         }
 
-        LeanTween.value(BorderDown.gameObject, (float value) =>
+        if (IsDisabled == false)
         {
-            BorderDown.GetComponent<RectTransform>().sizeDelta = new Vector3(value, _borderDownHeight);
-        }, _borderDownMinWidth, _borderDownMaxWidth, _animationSpeed);
+            LeanTween.value(BorderDown.gameObject, (float value) =>
+            {
+                BorderDown.GetComponent<RectTransform>().sizeDelta = new Vector3(value, _borderDownHeight);
+            }, _borderDownMinWidth, _borderDownMaxWidth, _animationSpeed);
+        }
     }
 
     public void OnBlur(bool initial = false)
@@ -122,10 +134,17 @@ public class InputFieldCustom : MonoBehaviour
             }
         }
 
-        LeanTween.value(BorderDown.gameObject, (float value) =>
+        if (IsDisabled == false)
         {
-            BorderDown.GetComponent<RectTransform>().sizeDelta = new Vector3(value, _borderDownHeight);
-        }, _borderDownMaxWidth, _borderDownMinWidth, _animationSpeed);
+            LeanTween.value(BorderDown.gameObject, (float value) =>
+            {
+                BorderDown.GetComponent<RectTransform>().sizeDelta = new Vector3(value, _borderDownHeight);
+            }, _borderDownMaxWidth, _borderDownMinWidth, _animationSpeed);
+        }
+        else
+        {
+            BorderDown.GetComponent<RectTransform>().sizeDelta = new Vector3(_borderDownMinWidth, _borderDownHeight);
+        }
 
         OnBlurDelegate?.Invoke();
     }
@@ -136,5 +155,23 @@ public class InputFieldCustom : MonoBehaviour
             InputField.text = InputField.text.ToUpper();
 
         OnChangeDelegate?.Invoke();
+    }
+
+    public void SetDisabled()
+    {
+        IsDisabled = true;
+        InputField.readOnly = true;
+        InputField.interactable = false;
+        Label.color = GameHiddenOptions.Instance.DisabledTextColor;
+        InputField.textComponent.color = GameHiddenOptions.Instance.LabelColor;
+    }
+
+    public void SetEnabled()
+    {
+        IsDisabled = false;
+        InputField.readOnly = false;
+        InputField.interactable = true;
+        Label.color = GameHiddenOptions.Instance.LabelColor;
+        InputField.textComponent.color = GameHiddenOptions.Instance.NormalTextColor;
     }
 }

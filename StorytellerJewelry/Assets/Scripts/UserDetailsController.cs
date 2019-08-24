@@ -10,12 +10,19 @@ public class UserDetailsController : MonoBehaviour
 
     public InputFieldCustom Name;
     public InputFieldCustom Email;
-    public InputFieldCustom Address;
+    public InputFieldCustom AddressCity;
+    public InputFieldCustom AddressStreet;
+
+    public Text UserDetailsButtonText;
+
+    private bool _isEnabled;
 
     // Start is called before the first frame update
     void Start()
     {
         GetUser();
+        _isEnabled = true; // so we can make it false
+        EnableDisable();
     }
 
     private void GetUser()
@@ -24,12 +31,30 @@ public class UserDetailsController : MonoBehaviour
 
         Name.InputField.text = User.Name;
         Email.InputField.text = User.Email;
-        Address.InputField.text = User.Address;
+        AddressCity.InputField.text = User.Address;
+        AddressStreet.InputField.text = User.AddressStreet;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void EnableDisable()
     {
+        _isEnabled = !_isEnabled;
+        if (_isEnabled)
+        {
+            Name.SetEnabled();
+            Email.SetEnabled();
+            AddressCity.SetEnabled();
+            AddressStreet.SetEnabled();
 
+            UserDetailsButtonText.text = "Salveaza";
+        }
+        else
+        {
+            Name.SetDisabled();
+            Email.SetDisabled();
+            AddressCity.SetDisabled();
+            AddressStreet.SetDisabled();
+
+            UserDetailsButtonText.text = "Editeaza";
+        }
     }
 }

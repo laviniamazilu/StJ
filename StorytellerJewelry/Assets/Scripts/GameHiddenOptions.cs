@@ -33,7 +33,10 @@ public class GameHiddenOptions : MonoBehaviour
     //public Color32 GameNameColor;
 
     [Header("Input Colors")]
+    public Color32 IconColor;
     public Color32 LabelColor;
+    public Color32 DisabledTextColor;
+    public Color32 NormalTextColor;
 
     [Header("Prefabs")]
     public GameObject CategoryPrefab;
