@@ -45,7 +45,11 @@ namespace Assets.Scripts.Data
                 default:
                     return new List<Category>();
             }
+        }
 
+        public static User GetUser()
+        {
+            return new User() { Name = "Lavinia Mazilu", Address = "", Email = "lavmaz@gmail.com" };
         }
     }
 }

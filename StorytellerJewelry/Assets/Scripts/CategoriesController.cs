@@ -7,8 +7,6 @@ using System.Linq;
 
 public class CategoriesController : MonoBehaviour
 {
-    public GameObject CategoryPrefab;
-
     public List<Category> Categories;
 
     private List<CategoryComponent> _categoriesPool;
@@ -74,7 +72,7 @@ public class CategoriesController : MonoBehaviour
 
     private CategoryComponent CreateCategoryComponent(Category category)
     {
-        var go = UsefullUtils.CreateUiObject(Instantiate(CategoryPrefab), category.Description, this.transform);
+        var go = UsefullUtils.CreateUiObject(Instantiate(GameHiddenOptions.Instance.CategoryPrefab), category.Description, this.transform);
         return go.GetComponent<CategoryComponent>();
     }
 }
