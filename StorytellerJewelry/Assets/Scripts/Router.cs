@@ -32,6 +32,7 @@ public class Router : MonoBehaviour
     void Start()
     {
         DrawerInstance.gameObject.SetActive(true);
+        ((CompileStyles)FindObjectOfType(typeof(CompileStyles))).Init(true);
 
         _routes = new Dictionary<string, IRoute>()
         {

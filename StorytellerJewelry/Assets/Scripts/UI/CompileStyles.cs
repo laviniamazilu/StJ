@@ -22,7 +22,7 @@ public class CompileStyles : MonoBehaviour
 #if UNITY_EDITOR
                 child.GetComponent<Style>().ApplyStyle(atRunTime);
 #else
-                child.GetComponent<Style>().ApplyStyle();
+                child.GetComponent<Style>().ApplyStyle(true);
 #endif
             }
             //Debug.Log(child.gameObject.name);

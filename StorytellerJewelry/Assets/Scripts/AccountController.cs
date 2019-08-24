@@ -10,6 +10,7 @@ public class AccountController : MonoBehaviour
     void Start()
     {
         CategoriesController.PopulateCategories();
+        CategoriesController.gameObject.GetComponent<Style>().ApplyStyle(true);
     }
 
     // Update is called once per frame

@@ -78,12 +78,20 @@ public class Style : MonoBehaviour
                 case SizeUnit.Percent:
                     newWidth = UsefullUtils.GetPercent(thisParentRect.sizeDelta.x, Width);
                     break;
-                default:
-                    float screenSizeWidth = (float)Screen.width;
+                case SizeUnit.ActualScreen:
+                    float actualScreenSizeWidth = (float)Screen.width;
                     if (atRunTime == false)
                     {
-                        screenSizeWidth = ((CompileStyles)FindObjectOfType(typeof(CompileStyles))).ReferenceResolution.x;
+                        actualScreenSizeWidth = ((CompileStyles)FindObjectOfType(typeof(CompileStyles))).ReferenceResolution.x;
                     }
+                    newWidth = UsefullUtils.GetPercent(actualScreenSizeWidth, Width);
+                    break;
+                default:
+                    //float screenSizeWidth = (float)Screen.width;
+                    //if (atRunTime == false)
+                    //{
+                        float screenSizeWidth = ((CompileStyles)FindObjectOfType(typeof(CompileStyles))).ReferenceResolution.x;
+                    //}
                     newWidth = UsefullUtils.GetPercent(screenSizeWidth, Width);
                     break;
             }
@@ -118,5 +126,6 @@ public enum SizeUnit
 {
     Pixels,
     Percent,
+    ActualScreen,
     Screen
 }
