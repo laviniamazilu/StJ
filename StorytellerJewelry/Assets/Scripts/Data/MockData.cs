@@ -55,10 +55,10 @@ namespace Assets.Scripts.Data
         public static List<Product> GetProducts(int categoryId = 0)
         {
             return new List<Product>() {
-                        new Product() { Id = 5, Name = "Bratara 1", PicturePath = "Lant1", CategoryId = categoryId },
-                        new Product() { Id = 6, Name = "Bratara 2", PicturePath = "Lant1", CategoryId = categoryId },
-                        new Product() { Id = 7, Name = "Coliere 1", PicturePath = "Lant1", CategoryId = categoryId },
-                        new Product() { Id = 7, Name = "Coliere 2", PicturePath = "Lant1", CategoryId = categoryId }
+                        new Product() { Id = 5, Name = "Bratara 1", PicturePath = "Lant1", SubCategoryId = categoryId },
+                        new Product() { Id = 6, Name = "Bratara 2", PicturePath = "Lant1", SubCategoryId = categoryId },
+                        new Product() { Id = 7, Name = "Coliere 1", PicturePath = "Lant1", SubCategoryId = categoryId },
+                        new Product() { Id = 7, Name = "Coliere 2", PicturePath = "Lant1", SubCategoryId = categoryId }
                         };
             //switch (categoryId)
             //{

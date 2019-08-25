@@ -18,7 +18,22 @@ public class ProductsController : MonoBehaviour, IRoute
 
     public void Refresh(Route route)
     {
-        _products = MockData.GetProducts();
+        //_products = MockData.GetProducts();
+
+        if (_productsPool != null)
+        {
+            foreach (IPrefabComponent product in _productsPool)
+            {
+                product.GameObject.SetActive(false);
+            }
+        }
+
+        ProductData.Instance.GetProducts(route.RouteKey, OnProductsLoaded);
+    }
+
+    private void OnProductsLoaded(List<Product> products)
+    {
+        _products = products;
 
         foreach (Product product in _products)
         {

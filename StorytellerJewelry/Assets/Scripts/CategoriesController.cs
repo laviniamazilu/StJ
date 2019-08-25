@@ -11,16 +11,27 @@ public class CategoriesController : MonoBehaviour
 
     private List<IPrefabComponent> _categoriesPool;
 
+    private string _actionRoutePath;
+
     public void PopulateCategories(int categoryId = 0, string actionRoutePath = "SubCategories")
     {
-        if (categoryId == 0)
-        {
-            Categories = MockData.GetCategories();
-        }
-        else
-        {
-            Categories = MockData.GetSubCategories(categoryId);
-        }
+        _actionRoutePath = actionRoutePath;
+
+        CategoryData.Instance.GetCategories(categoryId, OnCategoriesLoaded);
+
+        //if (categoryId == 0)
+        //{
+        //    Categories = MockData.GetCategories();
+        //}
+        //else
+        //{
+        //    Categories = MockData.GetSubCategories(categoryId);
+        //}
+    }
+
+    private void OnCategoriesLoaded(List<Category> categories)
+    {
+        Categories = categories;
 
         if (_categoriesPool != null)
         {
@@ -43,7 +54,7 @@ public class CategoriesController : MonoBehaviour
             categoryComponent.Id = category.Id;
             categoryComponent.Route = new Route()
             {
-                RoutePath = actionRoutePath,
+                RoutePath = _actionRoutePath,
                 RouteKey = category.Id
             };
 
