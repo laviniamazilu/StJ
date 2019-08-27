@@ -17,7 +17,6 @@ public class CategoryData : MonoBehaviour
     public delegate void OnRecievedCategoriesCallback(List<Category> categories);
     private OnRecievedCategoriesCallback OnRecievedCategories;
 
-    private string _baseUrl = "http://192.168.0.102:8080";
     private string _urlGetCategories = "/Stj/CategoryService/GetCategories.php";
 
     void Awake()
@@ -27,7 +26,7 @@ public class CategoryData : MonoBehaviour
 
     public void GetCategories(int categoryId, OnRecievedCategoriesCallback onRecievedCategories)
     {
-        var _url = _baseUrl + _urlGetCategories + "?categoryId=" + categoryId;
+        var _url = GameHiddenOptions.Instance.ServerURL + _urlGetCategories + "?categoryId=" + categoryId;
         OnRecievedCategories = onRecievedCategories;
         StartCoroutine(WaitForRequest(_url));
     }

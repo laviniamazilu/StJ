@@ -17,7 +17,6 @@ public class ProductData : MonoBehaviour
     public delegate void OnRecievedProductsCallback(List<Product> products);
     private OnRecievedProductsCallback OnRecievedProducts;
 
-    private string _baseUrl = "http://192.168.0.102:8080";
     private string _urlGetProducts = "/Stj/ProductService/GetProducts.php";
 
     void Awake()
@@ -27,7 +26,7 @@ public class ProductData : MonoBehaviour
 
     public void GetProducts(int subCategoryId, OnRecievedProductsCallback onRecievedProducts)
     {
-        var _url = _baseUrl + _urlGetProducts + "?subCategoryId=" + subCategoryId;
+        var _url = GameHiddenOptions.Instance.ServerURL + _urlGetProducts + "?subCategoryId=" + subCategoryId;
         OnRecievedProducts = onRecievedProducts;
         StartCoroutine(WaitForRequest(_url));
     }

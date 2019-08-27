@@ -19,6 +19,7 @@ public class GameHiddenOptions : MonoBehaviour
     }
 
     public bool InstantDebug;
+    public string ServerURL = "http://127.0.0.1:8080";
 
     //[Header("Execution Timers")]
     //public float TimeBeforeSessionCreation = 0.2f;
