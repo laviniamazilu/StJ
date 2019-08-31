@@ -9,10 +9,10 @@ namespace Assets.Scripts.Data
         public static List<Category> GetCategories()
         {
             return new List<Category>() {
-                new Category() { Id = 1, Description = "Pentru ea" },
-                new Category() { Id = 2, Description = "Pentru el" },
-                new Category() { Id = 3, Description = "Pentru cuplu" },
-                new Category() { Id = 4, Description = "Pentru copii" }
+                new Category() { id = 1, description = "Pentru ea" },
+                new Category() { id = 2, description = "Pentru el" },
+                new Category() { id = 3, description = "Pentru cuplu" },
+                new Category() { id = 4, description = "Pentru copii" }
             };
         }
 
@@ -22,25 +22,25 @@ namespace Assets.Scripts.Data
             {
                 case 1:
                     return new List<Category>() {
-                        new Category() { Id = 5, Description = "Bratari", CategoryId = categoryId },
-                        new Category() { Id = 6, Description = "Lanturi", CategoryId = categoryId },
-                        new Category() { Id = 7, Description = "Coliere cu nume", CategoryId = categoryId }
+                        new Category() { id = 5, description = "Bratari", id_category = categoryId },
+                        new Category() { id = 6, description = "Lanturi", id_category = categoryId },
+                        new Category() { id = 7, description = "Coliere cu nume", id_category = categoryId }
                     };
                 case 2:
                     return new List<Category>() {
-                        new Category() { Id = 5, Description = "Bratari", CategoryId = categoryId },
-                        new Category() { Id = 6, Description = "Lanturi", CategoryId = categoryId }
+                        new Category() { id = 5, description = "Bratari", id_category = categoryId },
+                        new Category() { id = 6, description = "Lanturi", id_category = categoryId }
                     };
                 case 3:
                     return new List<Category>() {
-                        new Category() { Id = 5, Description = "Bratari", CategoryId = categoryId },
-                        new Category() { Id = 6, Description = "Lanturi", CategoryId = categoryId }
+                        new Category() { id = 5, description = "Bratari", id_category = categoryId },
+                        new Category() { id = 6, description = "Lanturi", id_category = categoryId }
                     };
                 case 4:
                     return new List<Category>() {
-                        new Category() { Id = 5, Description = "Bratari", CategoryId = categoryId },
-                        new Category() { Id = 6, Description = "Lanturi", CategoryId = categoryId },
-                        new Category() { Id = 8, Description = "Banuti mot", CategoryId = categoryId }
+                        new Category() { id = 5, description = "Bratari", id_category = categoryId },
+                        new Category() { id = 6, description = "Lanturi", id_category = categoryId },
+                        new Category() { id = 8, description = "Banuti mot", id_category = categoryId }
                     };
                 default:
                     return new List<Category>();
@@ -55,10 +55,10 @@ namespace Assets.Scripts.Data
         public static List<Product> GetProducts(int categoryId = 0)
         {
             return new List<Product>() {
-                        new Product() { Id = 5, Name = "Bratara 1", PicturePath = "Lant1", SubCategoryId = categoryId },
-                        new Product() { Id = 6, Name = "Bratara 2", PicturePath = "Lant1", SubCategoryId = categoryId },
-                        new Product() { Id = 7, Name = "Coliere 1", PicturePath = "Lant1", SubCategoryId = categoryId },
-                        new Product() { Id = 7, Name = "Coliere 2", PicturePath = "Lant1", SubCategoryId = categoryId }
+                        new Product() { id = 5, name = "Bratara 1", picture_path = "Lant1", id_subcategory = categoryId },
+                        new Product() { id = 6, name = "Bratara 2", picture_path = "Lant1", id_subcategory = categoryId },
+                        new Product() { id = 7, name = "Coliere 1", picture_path = "Lant1", id_subcategory = categoryId },
+                        new Product() { id = 7, name = "Coliere 2", picture_path = "Lant1", id_subcategory = categoryId }
                         };
             //switch (categoryId)
             //{

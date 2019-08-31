@@ -656,7 +656,7 @@ PrefabInstance:
     - target: {fileID: 2971128887223655336, guid: 48d4ac2bf9744be458e4eee60bfc9958,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -184.61539
+      value: -184.5
       objectReference: {fileID: 0}
     - target: {fileID: 2971128887223655336, guid: 48d4ac2bf9744be458e4eee60bfc9958,
         type: 3}
@@ -866,7 +866,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 240, y: -369.23077}
+  m_AnchoredPosition: {x: 240, y: -369.25}
   m_SizeDelta: {x: 480, y: 738.46155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &278238185
@@ -1792,7 +1792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 240, y: -369.23077}
+  m_AnchoredPosition: {x: 240, y: -369.25}
   m_SizeDelta: {x: 480, y: 738.46155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1267933065
@@ -2657,7 +2657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InstantDebug: 0
-  ServerURL: http://172.30.40.150
+  ServerURL: http://192.168.0.106:8080
   IconColor:
     serializedVersion: 2
     rgba: 4289096659
@@ -3563,7 +3563,7 @@ PrefabInstance:
     - target: {fileID: 4372867809330146916, guid: b1daec4883e580142a2c4f16655c2280,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000010967255
+      value: -0.000014901246
       objectReference: {fileID: 0}
     - target: {fileID: 4372867810282678765, guid: b1daec4883e580142a2c4f16655c2280,
         type: 3}

@@ -44,21 +44,21 @@ public class CategoriesController : MonoBehaviour
         foreach (Category category in Categories)
         {
             var wasNull = UsefullUtils.CheckInPool(
-                category.Id,
+                category.id,
                 GameHiddenOptions.Instance.CategoryPrefab,
                 this.transform,
                 out IPrefabComponent categoryComponent,
                 ref _categoriesPool
                 );
 
-            categoryComponent.Id = category.Id;
+            categoryComponent.Id = category.id;
             categoryComponent.Route = new Route()
             {
                 RoutePath = _actionRoutePath,
-                RouteKey = category.Id
+                RouteKey = category.id
             };
 
-            (categoryComponent as CategoryComponent).CategoryName.text = category.Description;
+            (categoryComponent as CategoryComponent).CategoryName.text = category.description;
 
             if (wasNull)
             {
@@ -69,7 +69,7 @@ public class CategoriesController : MonoBehaviour
 
     private CategoryComponent CreateCategoryComponent(Category category)
     {
-        var go = UsefullUtils.CreateUiObject(Instantiate(GameHiddenOptions.Instance.CategoryPrefab), category.Description, this.transform);
+        var go = UsefullUtils.CreateUiObject(Instantiate(GameHiddenOptions.Instance.CategoryPrefab), category.description, this.transform);
         return go.GetComponent<CategoryComponent>();
     }
 }

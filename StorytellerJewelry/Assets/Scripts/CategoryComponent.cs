@@ -16,11 +16,3 @@ public class CategoryComponent : MonoBehaviour, IPrefabComponent
 
     public GameObject GameObject { get { return this.gameObject; } }
 }
-
-public interface IPrefabComponent
-{
-    int Id { get; set; }
-    Route Route { get; set; }
-
-    GameObject GameObject { get; }
-}

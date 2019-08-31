@@ -38,24 +38,24 @@ public class ProductsController : MonoBehaviour, IRoute
         foreach (Product product in _products)
         {
             var wasNull = UsefullUtils.CheckInPool(
-                product.Id,
+                product.id,
                 GameHiddenOptions.Instance.ProductPrefab,
                 ProductsParent.transform,
                 out IPrefabComponent productComponent,
                 ref _productsPool
                 );
 
-            productComponent.Id = product.Id;
+            productComponent.Id = product.id;
             productComponent.Route = new Route()
             {
                 RoutePath = "Product",
-                RouteKey = product.Id
+                RouteKey = product.id
             };
 
-            productComponent.GameObject.name = product.Name;
-            (productComponent as ProductComponent).Name.text = product.Name;
+            productComponent.GameObject.name = product.name;
+            (productComponent as ProductComponent).Name.text = product.name;
 
-            Sprite sprite = Resources.Load("ProductImages/" + product.PicturePath, typeof(Sprite)) as Sprite;
+            Sprite sprite = Resources.Load("ProductImages/" + product.picture_path, typeof(Sprite)) as Sprite;
             (productComponent as ProductComponent).SetImage(sprite);
 
             if (wasNull)

@@ -27,6 +27,7 @@ public class ProductData : MonoBehaviour
     public void GetProducts(int subCategoryId, OnRecievedProductsCallback onRecievedProducts)
     {
         var _url = GameHiddenOptions.Instance.ServerURL + _urlGetProducts + "?subCategoryId=" + subCategoryId;
+        Debug.Log(_url);
         OnRecievedProducts = onRecievedProducts;
         StartCoroutine(WaitForRequest(_url));
     }
