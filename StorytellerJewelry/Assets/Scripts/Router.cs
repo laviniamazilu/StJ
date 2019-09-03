@@ -11,12 +11,11 @@ public class Router : MonoBehaviour
         get { return _instance; }
     }
 
-    public string StartPage = "Home";
-
     public HomeController HomePage;
     public SubCategoriesController SubCategoriesPage;
     public CartController CartPage;
     public ProductsController Products;
+    public AuthController Auth;
     public Drawer DrawerInstance;
 
     private Dictionary<string, IRoute> _routes;
@@ -31,6 +30,11 @@ public class Router : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void Init() {
+
         DrawerInstance.gameObject.SetActive(true);
         ((CompileStyles)FindObjectOfType(typeof(CompileStyles))).Init(true);
 
@@ -39,10 +43,9 @@ public class Router : MonoBehaviour
             { "Home", (HomePage as IRoute) },
             { "SubCategories", (SubCategoriesPage as IRoute) },
             { "Cart", (CartPage as IRoute) },
+            { "Auth", (Auth as IRoute) },
             { "Products", (Products as IRoute) }
         };
-
-        ChangeRoute(StartPage);
     }
 
     public void ChangeRoute(string routeName)

@@ -47,9 +47,9 @@ namespace Assets.Scripts.Data
             }
         }
 
-        public static User GetUser()
+        public static Client GetUser()
         {
-            return new User() { Name = "Lavinia Mazilu", Address = "", Email = "lavmaz@gmail.com" };
+            return new Client() { lastname = "Mazilu", firstname = "Lavinia", address1 = "", email = "lavmaz@gmail.com" };
         }
 
         public static List<Product> GetProducts(int categoryId = 0)

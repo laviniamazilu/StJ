@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class UserDetailsController : MonoBehaviour
 {
-    public User User;
+    private static UserDetailsController _userDetailsController;
+    public static UserDetailsController Instance { get { return _userDetailsController; } }
+
+    public Client Client;
 
     public InputFieldCustom Name;
     public InputFieldCustom Email;
@@ -17,22 +20,37 @@ public class UserDetailsController : MonoBehaviour
 
     private bool _isEnabled;
 
+    void Awake()
+    {
+        _userDetailsController = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        GetUser();
-        _isEnabled = true; // so we can make it false
+        _isEnabled = false; // so we can make it false
         EnableDisable();
     }
 
-    private void GetUser()
+    public void GetUser(int id)
     {
-        User = MockData.GetUser();
+        ClientData.Instance.GetClient(id, (Client client) => {
 
-        Name.InputField.text = User.Name;
-        Email.InputField.text = User.Email;
-        AddressCity.InputField.text = User.Address;
-        AddressStreet.InputField.text = User.AddressStreet;
+            if (client == null)
+            {
+                UserDetailsButtonText.text = "Authentifica-te";
+                return;
+            }
+
+            Client = client;
+
+            Name.InputField.text = Client.firstname + Client.lastname;
+            Email.InputField.text = Client.email;
+            AddressCity.InputField.text = Client.address1;
+            AddressStreet.InputField.text = Client.address2;
+        });
+
+        
     }
 
     public void EnableDisable()
