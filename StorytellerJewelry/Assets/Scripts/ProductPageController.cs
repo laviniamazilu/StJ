@@ -18,6 +18,8 @@ public class ProductPageController : MonoBehaviour, IRoute
     public Text ModelDescription;
     public Text MeasureDescription;
 
+    public Text test;
+
     private Route _thisRoute = new Route()
     {
         RoutePath = "Products"
@@ -28,7 +30,8 @@ public class ProductPageController : MonoBehaviour, IRoute
         if (route.RouteKey == 0)
             route.RouteKey = 1;
 
-        ProductData.Instance.GetProduct(route.RouteKey, (Product product) => {
+        ProductData.Instance.GetProduct(route.RouteKey, (Product product) =>
+        {
 
             Sprite sprite = Resources.Load("ProductImages/" + product.picture_path, typeof(Sprite)) as Sprite;
             Picture.sprite = sprite;
@@ -43,6 +46,48 @@ public class ProductPageController : MonoBehaviour, IRoute
         });
     }
 
+    public void TakePic()
+    {
+        int maxSize = 512;
+
+        NativeCamera.Permission permission = NativeCamera.TakePicture((string path) => {
+
+            test.text = "Image path: " + path;
+
+            Debug.Log(test.text);
+            if (path != null)
+            {
+                // Create a Texture2D from the captured image
+                Texture2D texture = NativeCamera.LoadImageAtPath(path, maxSize);
+                if (texture == null)
+                {
+                    Debug.Log("Couldn't load texture from " + path);
+                    return;
+                }
+
+                // Assign texture to a temporary quad and destroy it after 5 seconds
+                GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                quad.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2.5f;
+                quad.transform.forward = Camera.main.transform.forward;
+                quad.transform.localScale = new Vector3(1f, texture.height / (float)texture.width, 1f);
+
+                Material material = quad.GetComponent<Renderer>().material;
+                if (!material.shader.isSupported) // happens when Standard shader is not included in the build
+                    material.shader = Shader.Find("Legacy Shaders/Diffuse");
+
+                material.mainTexture = texture;
+
+                Destroy(quad, 5f);
+
+                // If a procedural texture is not destroyed manually, 
+                // it will only be freed after a scene change
+                Destroy(texture, 5f);
+            }
+        }, maxSize);
+
+        test.text = "permission: " + permission; 
+    }
+
     public Route GetRoute()
     {
         return _thisRoute;
@@ -51,12 +96,12 @@ public class ProductPageController : MonoBehaviour, IRoute
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
