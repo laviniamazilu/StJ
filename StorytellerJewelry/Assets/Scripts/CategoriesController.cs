@@ -12,10 +12,12 @@ public class CategoriesController : MonoBehaviour
     private List<IPrefabComponent> _categoriesPool;
 
     private string _actionRoutePath;
+    private int _categoryId;
 
     public void PopulateCategories(int categoryId = 0, string actionRoutePath = "SubCategories")
     {
         _actionRoutePath = actionRoutePath;
+        _categoryId = categoryId;
 
         CategoryData.Instance.GetCategories(categoryId, OnCategoriesLoaded);
 
@@ -55,7 +57,8 @@ public class CategoriesController : MonoBehaviour
             categoryComponent.Route = new Route()
             {
                 RoutePath = _actionRoutePath,
-                RouteKey = category.id
+                RouteKey = category.id,
+                ExtraRouteKeys = (_actionRoutePath == "Products" ? new Dictionary<string, int>() { { "categoryId", _categoryId } } : null)
             };
 
             (categoryComponent as CategoryComponent).CategoryName.text = category.description;

@@ -46,6 +46,8 @@ public class GameHiddenOptions : MonoBehaviour
     [Header("Miscs")]
     public CanvasScaler CanvasScaler;
 
+    public const string _startIcon = "";
+
     public static int MAX_BYTE_SIZE = 1024;
 
     public static byte[] StringToBytes(string str)

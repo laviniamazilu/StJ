@@ -28,19 +28,34 @@ public class UserDetailsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _isEnabled = false; // so we can make it false
+        _isEnabled = true; // so we can make it false
         EnableDisable();
     }
 
     public void GetUser(int id)
     {
-        ClientData.Instance.GetClient(id, (Client client) => {
+        ClientData.Instance.GetClient(id, (Client client) =>
+        {
+
+            //Client client = new Client()
+            //{
+            //    id = 2,
+            //    firstname = "Lavinia",
+            //    lastname = "Mazilu",
+            //    password = "**********",
+            //    email = "laviniafmazilu@gmail.com",
+            //    phone = "+40 728 544 123",
+            //    city = "Constanta",
+            //    county = "Constanta",
+            //    address1 = "Vulturului, 4"
+            //};
 
             if (client == null)
             {
                 UserDetailsButtonText.text = "Authentifica-te";
                 return;
             }
+            UserDetailsButtonText.text = "Editeaza";
 
             Client = client;
 
@@ -49,8 +64,12 @@ public class UserDetailsController : MonoBehaviour
             AddressCity.InputField.text = Client.address1;
             AddressStreet.InputField.text = Client.address2;
         });
+    }
 
-        
+    public void GoToUserDetails()
+    {
+        var route = new Route() { RoutePath = "Auth", RouteKey = Client != null ? Client.id : 0 };
+        Router.Instance.ChangeRouteInternal(route);
     }
 
     public void EnableDisable()

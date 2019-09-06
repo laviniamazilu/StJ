@@ -12,9 +12,17 @@ public class ProductComponent : MonoBehaviour, IPrefabComponent
 
     public Text Name;
     public Image Image;
+    public Text Price;
+    public Text PriceOld;
+    public Text ReducePercent;
 
     public void SetImage(Sprite sprite)
     {
         Image.sprite = sprite;
+    }
+
+    public void GoToProduct()
+    {
+        Router.Instance.ChangeRouteInternal(new Route() { RoutePath = "Product", RouteKey = Id });
     }
 }

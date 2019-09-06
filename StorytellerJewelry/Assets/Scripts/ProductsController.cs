@@ -18,8 +18,6 @@ public class ProductsController : MonoBehaviour, IRoute
 
     public void Refresh(Route route)
     {
-        //_products = MockData.GetProducts();
-
         if (_productsPool != null)
         {
             foreach (IPrefabComponent product in _productsPool)
@@ -28,7 +26,10 @@ public class ProductsController : MonoBehaviour, IRoute
             }
         }
 
-        ProductData.Instance.GetProducts(route.RouteKey, OnProductsLoaded);
+        var categoryId = route.ExtraRouteKeys != null ? route.ExtraRouteKeys["categoryId"] : 0;
+        var subCategoryId = route.RouteKey;
+
+        ProductData.Instance.GetProducts(categoryId, subCategoryId, OnProductsLoaded);
     }
 
     private void OnProductsLoaded(List<Product> products)
@@ -54,6 +55,11 @@ public class ProductsController : MonoBehaviour, IRoute
 
             productComponent.GameObject.name = product.name;
             (productComponent as ProductComponent).Name.text = product.name;
+            (productComponent as ProductComponent).PriceOld.text = product.product_price.ToString() + " Lei";
+            var randomNr = ((int)Random.Range(1, 4)) * 10;
+            var oldPrice = UsefullUtils.GetPercent(product.product_price, 100 - randomNr);
+            (productComponent as ProductComponent).ReducePercent.text = "- " + randomNr.ToString() + " %";
+            (productComponent as ProductComponent).Price.text = oldPrice + " Lei";
 
             Sprite sprite = Resources.Load("ProductImages/" + product.picture_path, typeof(Sprite)) as Sprite;
             (productComponent as ProductComponent).SetImage(sprite);

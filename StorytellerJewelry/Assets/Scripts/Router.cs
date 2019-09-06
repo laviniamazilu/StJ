@@ -15,6 +15,7 @@ public class Router : MonoBehaviour
     public SubCategoriesController SubCategoriesPage;
     public CartController CartPage;
     public ProductsController Products;
+    public ProductPageController ProductPageController;
     public AuthController Auth;
     public Drawer DrawerInstance;
 
@@ -44,7 +45,8 @@ public class Router : MonoBehaviour
             { "SubCategories", (SubCategoriesPage as IRoute) },
             { "Cart", (CartPage as IRoute) },
             { "Auth", (Auth as IRoute) },
-            { "Products", (Products as IRoute) }
+            { "Products", (Products as IRoute) },
+            { "Product", (ProductPageController as IRoute) }
         };
     }
 

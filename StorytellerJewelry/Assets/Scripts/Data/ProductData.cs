@@ -17,19 +17,50 @@ public class ProductData : MonoBehaviour
     public delegate void OnRecievedProductsCallback(List<Product> products);
     private OnRecievedProductsCallback OnRecievedProducts;
 
+    public delegate void OnRecievedProductCallback(Product product);
+    private OnRecievedProductCallback OnRecievedProduct;
+
     private string _urlGetProducts = "/Stj/ProductService/GetProducts.php";
+    private string _urlGetProduct = "/Stj/ProductService/GetProduct.php";
 
     void Awake()
     {
         _productData = this;
     }
 
-    public void GetProducts(int subCategoryId, OnRecievedProductsCallback onRecievedProducts)
+    public void GetProducts(int categoryId, int subCategoryId, OnRecievedProductsCallback onRecievedProducts)
     {
-        var _url = GameHiddenOptions.Instance.ServerURL + _urlGetProducts + "?subCategoryId=" + subCategoryId;
+        var _url = GameHiddenOptions.Instance.ServerURL + _urlGetProducts + "?id_category=" + categoryId + "&id_subcategory=" + subCategoryId;
         Debug.Log(_url);
         OnRecievedProducts = onRecievedProducts;
+        StartCoroutine(WaitForProductsRequest(_url));
+    }
+
+    public void GetProduct(int productId, OnRecievedProductCallback onRecievedProduct)
+    {
+        var _url = GameHiddenOptions.Instance.ServerURL + _urlGetProduct + "?id_product=" + productId;
+        Debug.Log(_url);
+        OnRecievedProduct = onRecievedProduct;
         StartCoroutine(WaitForRequest(_url));
+    }
+
+    private IEnumerator WaitForProductsRequest(string _url)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(_url);
+
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.LogError(www.error);
+        }
+        else
+        {
+            Debug.Log(www.downloadHandler.text);
+
+            Product[] products2 = JsonHelper.FromJson<Product>(www.downloadHandler.text);
+            OnRecievedProducts(products2.ToList());
+        }
     }
 
     private IEnumerator WaitForRequest(string _url)
@@ -46,8 +77,8 @@ public class ProductData : MonoBehaviour
         {
             Debug.Log(www.downloadHandler.text);
 
-            Product[] products2 = JsonHelper.FromJson<Product>(www.downloadHandler.text);
-            OnRecievedProducts(products2.ToList());
+            Product products = JsonUtility.FromJson<Product>(www.downloadHandler.text);
+            OnRecievedProduct(products);
         }
     }
 }

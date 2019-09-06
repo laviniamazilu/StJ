@@ -16,4 +16,5 @@ public class Route
     public string RoutePath;
     public int RouteKey = 0;
     public string RouteExtras;
+    public Dictionary<string, int> ExtraRouteKeys;
 }
