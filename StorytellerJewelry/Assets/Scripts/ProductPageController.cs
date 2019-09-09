@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class ProductPageController : MonoBehaviour, IRoute
     {
         return this.gameObject;
     }
+
+    public Text TestText;
 
     public Image Picture;
     public Text Name;
@@ -91,38 +94,38 @@ public class ProductPageController : MonoBehaviour, IRoute
         _currentLoadedPicture = null;
         _fileName = null;
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
-        System.Windows.Forms.OpenFileDialog openFileDialog;
-        openFileDialog = new System.Windows.Forms.OpenFileDialog()
-        {
-            InitialDirectory = @"D:\",
-            Title = "Browse Text Files",
+//        //System.Windows.Forms.OpenFileDialog openFileDialog;
+//        //openFileDialog = new System.Windows.Forms.OpenFileDialog()
+//        //{
+//        //    InitialDirectory = @"D:\",
+//        //    Title = "Browse Text Files",
 
-            CheckFileExists = true,
-            CheckPathExists = true,
+//        //    CheckFileExists = true,
+//        //    CheckPathExists = true,
 
-            DefaultExt = "png",
-            Filter = "png files (*.png)|*.jpg",
-            FilterIndex = 2,
-            RestoreDirectory = true,
+//        //    DefaultExt = "png",
+//        //    Filter = "png files (*.png)|*.jpg",
+//        //    FilterIndex = 2,
+//        //    RestoreDirectory = true,
 
-            ReadOnlyChecked = true,
-            ShowReadOnly = true
-        };
+//        //    ReadOnlyChecked = true,
+//        //    ShowReadOnly = true
+//        //};
 
-        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-        {
-            Debug.Log(openFileDialog.FileName);
-            var fileData = System.IO.File.ReadAllBytes(openFileDialog.FileName);
-            _currentLoadedPicture = new Texture2D(2, 2);
-            _currentLoadedPicture.LoadImage(fileData); //..this will auto-resize the texture dimensions.
-            _fileName = openFileDialog.SafeFileName;
-        }
+//        //if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+//        //{
+//        //    Debug.Log(openFileDialog.FileName);
+//        //    var fileData = System.IO.File.ReadAllBytes(openFileDialog.FileName);
+//        //    _currentLoadedPicture = new Texture2D(2, 2);
+//        //    _currentLoadedPicture.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+//        //    _fileName = openFileDialog.SafeFileName;
+//        //}
 
-        OnPictureLoad(_currentLoadedPicture);
+//        OnPictureLoad(_currentLoadedPicture);
 
-#elif UNITY_ANDROID
+//#elif UNITY_ANDROID
         
         NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((string path) => {
             
@@ -130,10 +133,11 @@ public class ProductPageController : MonoBehaviour, IRoute
             {
                 // Create Texture from selected image
                 _currentLoadedPicture = NativeGallery.LoadImageAtPath(path);
+                _fileName = Path.GetFileName(path);
                 OnPictureLoad(_currentLoadedPicture);
             }
         }, "", "image/*");
-#endif
+//#endif
     }
 
     private void MakeEverythingActive()
