@@ -42,6 +42,7 @@ public class GameHiddenOptions : MonoBehaviour
     [Header("Prefabs")]
     public GameObject CategoryPrefab;
     public GameObject ProductPrefab;
+    public GameObject CartProductPrefab;
 
     [Header("Miscs")]
     public CanvasScaler CanvasScaler;

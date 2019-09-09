@@ -20,6 +20,9 @@ public class AuthController : MonoBehaviour, IRoute
     private AuthStep CurrentAuthStep;
 
     public Text InfoText;
+    public Text AfterLoginText;
+    public InputField LoginEmailInput;
+    public InputField LoginPhonePassword;
 
     public GameObject FieldsContainer;
     public GameObject LoginContainer;
@@ -31,6 +34,8 @@ public class AuthController : MonoBehaviour, IRoute
     private const string _signInIcon = "";
     private const string _registerIcon = "";
 
+    public Text TextEroare;
+
     public InputField FirstNameInput;
     public InputField LastNameInput;
     public InputField EmailInput;
@@ -39,18 +44,6 @@ public class AuthController : MonoBehaviour, IRoute
     public InputField CityInput;
     public InputField CountyInput;
     public InputField PasswordInput;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public GameObject GetGameObject()
     {
@@ -87,19 +80,116 @@ public class AuthController : MonoBehaviour, IRoute
 
     public void DoAction()
     {
+        Client clientToSave = null;
+
         switch (CurrentAuthStep)
         {
             case AuthStep.Login:
-                Debug.Log("Login");
+
+                if (string.IsNullOrEmpty(LoginEmailInput.text) || string.IsNullOrEmpty(LoginEmailInput.text))
+                {
+                    return;
+                }
+
+                var clientToLogin = new Client()
+                {
+                    id = UserDetailsController.Instance.ID_CLIENT,
+                    email = LoginEmailInput.text,
+                    password = LoginPhonePassword.text
+                };
+                ClientData.Instance.Login(clientToLogin, (string message) =>
+                {
+                    switch (message)
+                    {
+                        case "NO_EXISTS":
+                        case "FAILED":
+                            AfterLoginText.text = "Can't login with this combination of Email and Password.";
+                            break;
+                        case "SUCCESS":
+                            AfterLoginText.text = "";
+                            AppStart.Instance.IS_LOGGED_IN = true;
+                            AppStart.Instance.WriteString("LOGGED_IN");
+                            UserDetailsController.Instance.GetUser(UserDetailsController.Instance.ID_CLIENT);
+                            Router.Instance.ChangeRoute("Home");
+                            break;
+                        default: break;
+                    }
+                });
                 break;
             case AuthStep.Register:
-                
-                CurrentAuthStep = AuthStep.Login;
 
+                if (
+                    string.IsNullOrEmpty(FirstNameInput.text)
+                    || string.IsNullOrEmpty(LastNameInput.text)
+                    || string.IsNullOrEmpty(EmailInput.text)
+                    || string.IsNullOrEmpty(PhoneInput.text)
+                    || string.IsNullOrEmpty(AddressInput.text)
+                    || string.IsNullOrEmpty(CityInput.text)
+                    || string.IsNullOrEmpty(CountyInput.text)
+                    || string.IsNullOrEmpty(PasswordInput.text)
+                )
+                {
+                    TextEroare.text = "Nu ai completat toate campurile!";
+                    return;
+                }
+                TextEroare.text = "";
+
+                clientToSave = new Client()
+                {
+                    id = UserDetailsController.Instance.ID_CLIENT,
+                    firstname = FirstNameInput.text,
+                    lastname = LastNameInput.text,
+                    email = EmailInput.text,
+                    phone = PhoneInput.text,
+                    address1 = AddressInput.text,
+                    city = CityInput.text,
+                    county = CountyInput.text,
+                    password = PasswordInput.text,
+                };
+
+                ClientData.Instance.RegisterUser(clientToSave, (string message) =>
+                {
+                    CurrentAuthStep = AuthStep.Login;
+                    ChangeView();
+                });
 
                 break;
             case AuthStep.Edit:
-                Debug.Log("Save");
+
+                if (
+                    string.IsNullOrEmpty(FirstNameInput.text)
+                    || string.IsNullOrEmpty(LastNameInput.text)
+                    || string.IsNullOrEmpty(EmailInput.text)
+                    || string.IsNullOrEmpty(PhoneInput.text)
+                    || string.IsNullOrEmpty(AddressInput.text)
+                    || string.IsNullOrEmpty(CityInput.text)
+                    || string.IsNullOrEmpty(CountyInput.text)
+                    || string.IsNullOrEmpty(PasswordInput.text)
+                )
+                {
+                    TextEroare.text = "Nu ai completat toate campurile!";
+                    return;
+                }
+                TextEroare.text = "";
+
+                clientToSave = new Client()
+                {
+                    id = UserDetailsController.Instance.ID_CLIENT,
+                    firstname = FirstNameInput.text,
+                    lastname = LastNameInput.text,
+                    email = EmailInput.text,
+                    phone = PhoneInput.text,
+                    address1 = AddressInput.text,
+                    city = CityInput.text,
+                    county = CountyInput.text,
+                    password = PasswordInput.text,
+                };
+
+                ClientData.Instance.RegisterUser(clientToSave, (string message) =>
+                {
+                    Router.Instance.ChangeRoute("Home");
+                });
+
                 break;
             default:
                 break;

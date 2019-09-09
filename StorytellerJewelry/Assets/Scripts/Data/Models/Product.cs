@@ -28,4 +28,6 @@ public class Product
     public float measure_diameter;
 
     public float product_price;
+
+    public bool IsNume;
 }

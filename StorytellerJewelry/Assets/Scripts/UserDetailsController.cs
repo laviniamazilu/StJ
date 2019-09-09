@@ -10,6 +10,7 @@ public class UserDetailsController : MonoBehaviour
     public static UserDetailsController Instance { get { return _userDetailsController; } }
 
     public Client Client;
+    public int ID_CLIENT;
 
     public InputFieldCustom Name;
     public InputFieldCustom Email;
@@ -34,23 +35,11 @@ public class UserDetailsController : MonoBehaviour
 
     public void GetUser(int id)
     {
-        ClientData.Instance.GetClient(id, (Client client) =>
+        ID_CLIENT = id;
+
+        ClientData.Instance.GetClient(ID_CLIENT, (Client client) =>
         {
-
-            //Client client = new Client()
-            //{
-            //    id = 2,
-            //    firstname = "Lavinia",
-            //    lastname = "Mazilu",
-            //    password = "**********",
-            //    email = "laviniafmazilu@gmail.com",
-            //    phone = "+40 728 544 123",
-            //    city = "Constanta",
-            //    county = "Constanta",
-            //    address1 = "Vulturului, 4"
-            //};
-
-            if (client == null)
+            if (client == null || AppStart.Instance.IS_LOGGED_IN == false)
             {
                 UserDetailsButtonText.text = "Authentifica-te";
                 return;
@@ -93,5 +82,17 @@ public class UserDetailsController : MonoBehaviour
 
             UserDetailsButtonText.text = "Editeaza";
         }
+    }
+
+    public void LogOut()
+    {
+        Client = null;
+        ID_CLIENT = 0;
+        Name.InputField.text = "";
+        Email.InputField.text = "";
+        AddressCity.InputField.text = "";
+        AddressStreet.InputField.text = "";
+        AppStart.Instance.WriteString("LOGGED_OUT");
+        AppStart.Instance.Init();
     }
 }

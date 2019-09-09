@@ -36,6 +36,14 @@ public class ProductsController : MonoBehaviour, IRoute
     {
         _products = products;
 
+        if (_productsPool != null)
+        {
+            foreach (var item in _productsPool)
+            {
+                item.GameObject.SetActive(false);
+            }
+        }
+
         foreach (Product product in _products)
         {
             var wasNull = UsefullUtils.CheckInPool(

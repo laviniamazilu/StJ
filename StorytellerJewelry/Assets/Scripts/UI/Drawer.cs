@@ -114,27 +114,5 @@ public class Drawer : MonoBehaviour
     private float GetAnimationTime(float newPosX, bool isClosing = false)
     {
         return AnimationTime / 2;
-        ////float percent = UsefullUtils.GetValuePercent(Content.localPosition.x, newPosX);
-        ////if (isClosing)
-        ////{
-        //    var percent = UsefullUtils.GetValuePercent(System.Math.Abs(Content.localPosition.x), _width);
-        ////}
-
-        //var actualTime = AnimationTime - UsefullUtils.GetPercent(AnimationTime, percent);
-        //Debug.Log(actualTime);
-        //return actualTime;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            CloseDrawer();
-        }
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            OpenDrawer();
-        }
     }
 }

@@ -18,7 +18,29 @@ public class ProductPageController : MonoBehaviour, IRoute
     public Text ModelDescription;
     public Text MeasureDescription;
 
-    public Text test;
+    [Header("Fotogravura objects")]
+    public GameObject FotogravuraPanel;
+    public Text NoPicText;
+    public GameObject RemovePicButton;
+    public GameObject GravuraTextPanel;
+    public GameObject LoadedImagePanel;
+    public Image LoadedImage;
+
+    [Header("Gravura Text objects")]
+    public InputField GravuraTextInputField;
+    public Dropdown GravuraTypeDropdown;
+    public GameObject TextVersoPanel;
+    public InputField TextVersoInput;
+
+    [Header("Nume Text objects")]
+    public GameObject NumeTextPanel;
+    public InputField NumeInputField;
+
+    private Product _product;
+    private ProductOptions _productOptions;
+
+    private Texture2D _currentLoadedPicture;
+    private string _fileName;
 
     private Route _thisRoute = new Route()
     {
@@ -27,11 +49,26 @@ public class ProductPageController : MonoBehaviour, IRoute
 
     public void Refresh(Route route)
     {
+        MakeEverythingActive();
+
         if (route.RouteKey == 0)
             route.RouteKey = 1;
 
+        RemovePic();
+
         ProductData.Instance.GetProduct(route.RouteKey, (Product product) =>
         {
+            _product = product;
+
+            _product.IsNume = (_product.model_name.ToLower().IndexOf("nume") >= 0);
+            ShowOptions();
+
+            _productOptions = new ProductOptions()
+            {
+                id_product = _product.id,
+                id_client = UserDetailsController.Instance.ID_CLIENT,
+                id_gravura = 1
+            };
 
             Sprite sprite = Resources.Load("ProductImages/" + product.picture_path, typeof(Sprite)) as Sprite;
             Picture.sprite = sprite;
@@ -48,44 +85,185 @@ public class ProductPageController : MonoBehaviour, IRoute
 
     public void TakePic()
     {
-        int maxSize = 512;
+        if (NativeGallery.IsMediaPickerBusy())
+            return;
 
-        NativeCamera.Permission permission = NativeCamera.TakePicture((string path) => {
+        _currentLoadedPicture = null;
+        _fileName = null;
 
-            test.text = "Image path: " + path;
+#if UNITY_EDITOR
 
-            Debug.Log(test.text);
+        System.Windows.Forms.OpenFileDialog openFileDialog;
+        openFileDialog = new System.Windows.Forms.OpenFileDialog()
+        {
+            InitialDirectory = @"D:\",
+            Title = "Browse Text Files",
+
+            CheckFileExists = true,
+            CheckPathExists = true,
+
+            DefaultExt = "png",
+            Filter = "png files (*.png)|*.jpg",
+            FilterIndex = 2,
+            RestoreDirectory = true,
+
+            ReadOnlyChecked = true,
+            ShowReadOnly = true
+        };
+
+        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+            Debug.Log(openFileDialog.FileName);
+            var fileData = System.IO.File.ReadAllBytes(openFileDialog.FileName);
+            _currentLoadedPicture = new Texture2D(2, 2);
+            _currentLoadedPicture.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+            _fileName = openFileDialog.SafeFileName;
+        }
+
+        OnPictureLoad(_currentLoadedPicture);
+
+#elif UNITY_ANDROID
+        
+        NativeGallery.Permission permission = NativeGallery.GetImageFromGallery((string path) => {
+            
             if (path != null)
             {
-                // Create a Texture2D from the captured image
-                Texture2D texture = NativeCamera.LoadImageAtPath(path, maxSize);
-                if (texture == null)
-                {
-                    Debug.Log("Couldn't load texture from " + path);
-                    return;
-                }
-
-                // Assign texture to a temporary quad and destroy it after 5 seconds
-                GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                quad.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2.5f;
-                quad.transform.forward = Camera.main.transform.forward;
-                quad.transform.localScale = new Vector3(1f, texture.height / (float)texture.width, 1f);
-
-                Material material = quad.GetComponent<Renderer>().material;
-                if (!material.shader.isSupported) // happens when Standard shader is not included in the build
-                    material.shader = Shader.Find("Legacy Shaders/Diffuse");
-
-                material.mainTexture = texture;
-
-                Destroy(quad, 5f);
-
-                // If a procedural texture is not destroyed manually, 
-                // it will only be freed after a scene change
-                Destroy(texture, 5f);
+                // Create Texture from selected image
+                _currentLoadedPicture = NativeGallery.LoadImageAtPath(path);
+                OnPictureLoad(_currentLoadedPicture);
             }
-        }, maxSize);
+        }, "", "image/*");
+#endif
+    }
 
-        test.text = "permission: " + permission; 
+    private void MakeEverythingActive()
+    {
+        LoadedImagePanel.SetActive(true);
+        LoadedImage.gameObject.SetActive(true);
+        NoPicText.gameObject.SetActive(true);
+        RemovePicButton.SetActive(true);
+        GravuraTextPanel.SetActive(true);
+        FotogravuraPanel.SetActive(true);
+        GravuraTextPanel.SetActive(true);
+        TextVersoPanel.SetActive(true);
+        NumeTextPanel.SetActive(true);
+        GravuraTypeDropdown.value = 0;
+        GravuraTextInputField.text = "";
+        NumeInputField.text = "";
+        TextVersoInput.text = "";
+    }
+
+    public void RemovePic()
+    {
+        LoadedImagePanel.SetActive(false);
+        LoadedImage.gameObject.SetActive(false);
+        NoPicText.gameObject.SetActive(true);
+        RemovePicButton.SetActive(false);
+
+        GravuraTextPanel.SetActive(true);
+        OnGravuraTypeChange();
+
+        _currentLoadedPicture = null;
+        _fileName = null;
+    }
+
+    private void ShowOptions()
+    {
+        if (_product.IsNume)
+        {
+            FotogravuraPanel.SetActive(false);
+            GravuraTextPanel.SetActive(false);
+            TextVersoPanel.SetActive(false);
+
+            // numele e numai pe fata
+            if (_productOptions != null)
+            {
+                _productOptions.id_gravura = 1;
+            }
+        }
+        else
+        {
+            NumeTextPanel.SetActive(false);
+        }
+    }
+
+    private void OnPictureLoad(Texture2D texture)
+    {
+        if (texture == null)
+        {
+            Debug.Log("Couldn't load texture");
+            return;
+        }
+
+        LoadedImagePanel.SetActive(true);
+        LoadedImage.gameObject.SetActive(true);
+        NoPicText.gameObject.SetActive(false);
+        RemovePicButton.SetActive(true);
+        GravuraTextPanel.SetActive(false);
+
+        // poza e numai pe fata
+        _productOptions.id_gravura = 1;
+
+        Rect rec = new Rect(0, 0, texture.width, texture.height);
+        LoadedImage.sprite = Sprite.Create(texture, rec, new Vector2(0, 0), .01f);
+    }
+
+    public void OnGravuraTextChange()
+    {
+        if (string.IsNullOrWhiteSpace(GravuraTextInputField.text) == false)
+        {
+            FotogravuraPanel.SetActive(false);
+        }
+        else
+        {
+            FotogravuraPanel.SetActive(true);
+        }
+    }
+
+    public void OnGravuraTypeChange()
+    {
+        if (_product != null && _product.IsNume)
+            return;
+
+        if (GravuraTypeDropdown.value > 0)
+        {
+            TextVersoPanel.SetActive(true);
+            if (_productOptions != null)
+                _productOptions.id_gravura = 3;
+        }
+        else
+        {
+            TextVersoPanel.SetActive(false);
+            if (_productOptions != null)
+                _productOptions.id_gravura = 1;
+        }
+    }
+
+    public void AddToCart()
+    {
+        if (GravuraTextPanel.activeSelf == true)
+        {
+            _productOptions.text = GravuraTextInputField.text;
+
+            if (_productOptions.id_gravura == 3)
+            {
+                _productOptions.text_verso = TextVersoInput.text;
+            }
+        }
+        else if (_product.IsNume)
+        {
+            _productOptions.nume = NumeInputField.text;
+        }
+        else
+        {
+            _productOptions.picture_bytes = _fileName != null ? _currentLoadedPicture.EncodeToJPG() : null;
+            _productOptions.file = _fileName;
+        }
+
+        CartData.Instance.SaveProductToCart(_productOptions, () =>
+        {
+
+        });
     }
 
     public Route GetRoute()
